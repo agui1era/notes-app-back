@@ -1,34 +1,13 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from fastapi import FastAPI
+from app.api.auth import router as auth_router
+from app.api.notes import router as notes_router
 
-# Importa el módulo completo en lugar de solo funciones específicas
-import app.api.auth as auth
+app = FastAPI(title="Notes API", description="API para gestión de notas")
 
-# Crear instancia de FastAPI
-app = FastAPI()
+# Rutas principales
+app.include_router(auth_router, prefix="/api/auth", tags=["Auth"])
+app.include_router(notes_router, prefix="/api/notes", tags=["Notes"])
 
-# Modelos para solicitudes
-class User(BaseModel):
-    username: str
-    password: str
-
-# Ruta principal
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to the FastAPI application!"}
-
-# Ruta para registrar usuario
-@app.post("/api/auth/register")
-async def register_user(user: User):
-    try:
-        return auth.register_user_logic(user)  # Llama directamente al módulo
-    except HTTPException as e:
-        raise e
-
-# Ruta para iniciar sesión
-@app.post("/api/auth/login")
-async def login_user(user: User):
-    try:
-        return auth.login_user_logic(user)  # Llama directamente al módulo
-    except HTTPException as e:
-        raise e
+    return {"message": "Bienvenido a la API de notas"}
