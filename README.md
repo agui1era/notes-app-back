@@ -133,15 +133,3 @@ docker-compose up --build
 
 Esto levantará el backend con PostgreSQL sin necesidad de configurarlo manualmente.
 
----
-
-## 📌 **Pruebas**
-Ejecuta las pruebas unitarias con:
-```sh
-pytest tests/
-```
-
----
-
-## 📌 **Contacto**
-Desarrollado por **Oscar Aguilera** 🧑‍💻. ¡Si tienes dudas, contáctame! 🚀
