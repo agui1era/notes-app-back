@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
@@ -58,3 +59,13 @@ async def login_user(user: User):
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
     access_token = create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
+
+# 🔹 Ruta explícita para manejar OPTIONS en /login y evitar errores CORS
+@router.options("/login")
+async def options_login():
+    headers = {
+        "Access-Control-Allow-Origin": "*",  # Permitir cualquier origen
+        "Access-Control-Allow-Methods": "OPTIONS, POST",  # Métodos permitidos
+        "Access-Control-Allow-Headers": "*",  # Permitir cualquier encabezado
+    }
+    return JSONResponse(content={"message": "Método OPTIONS habilitado para /login"}, headers=headers)
